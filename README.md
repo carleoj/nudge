@@ -37,6 +37,14 @@ It is intentionally simple: add a reminder, choose a date, keep a little context
 
 ## Getting started
 
+### Download for Windows
+
+Download the latest packaged Windows installer here:
+
+[Download Nudge for Windows](https://www.dropbox.com/scl/fi/x2gozqo040fe8y05pxhho/Nudge-Setup-4.6.0.exe?rlkey=t4cowwlj4xwa9cgjptbz42ahh&st=xl4pny4i&dl=0)
+
+After downloading, double-click the `.exe` file and follow the installer steps.
+
 Clone the repository and install dependencies:
 
 ```bash
