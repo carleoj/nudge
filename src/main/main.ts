@@ -18,22 +18,30 @@ import startAutoUpdates from './updates';
 
 let mainWindow: BrowserWindow | null = null;
 
-const remindersPath = (): string => path.join(app.getPath('userData'), 'reminders.json');
+const remindersPath = (): string =>
+  path.join(app.getPath('userData'), 'reminders.json');
 
 ipcMain.handle('reminders:load', async (): Promise<Reminder[]> => {
   try {
     const stored = await fs.readFile(remindersPath(), 'utf8');
     const parsed: unknown = JSON.parse(stored);
-    return Array.isArray(parsed) ? parsed as Reminder[] : [];
+    return Array.isArray(parsed) ? (parsed as Reminder[]) : [];
   } catch {
     return [];
   }
 });
 
-ipcMain.handle('reminders:save', async (_event, reminders: Reminder[]): Promise<void> => {
-  await fs.mkdir(app.getPath('userData'), { recursive: true });
-  await fs.writeFile(remindersPath(), JSON.stringify(reminders, null, 2), 'utf8');
-});
+ipcMain.handle(
+  'reminders:save',
+  async (_event, reminders: Reminder[]): Promise<void> => {
+    await fs.mkdir(app.getPath('userData'), { recursive: true });
+    await fs.writeFile(
+      remindersPath(),
+      JSON.stringify(reminders, null, 2),
+      'utf8',
+    );
+  },
+);
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;

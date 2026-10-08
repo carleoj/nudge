@@ -2,5 +2,10 @@ node_modules/
 dist/
 out/
 release/
+!release/
+release/*
+!release/app/
+release/app/*
+!release/app/package.json
 .env
 *.log

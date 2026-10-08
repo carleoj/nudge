@@ -25,7 +25,8 @@ const electronHandler = {
   },
   reminders: {
     load: (): Promise<Reminder[]> => ipcRenderer.invoke('reminders:load'),
-    save: (reminders: Reminder[]): Promise<void> => ipcRenderer.invoke('reminders:save', reminders),
+    save: (reminders: Reminder[]): Promise<void> =>
+      ipcRenderer.invoke('reminders:save', reminders),
   },
 };
 

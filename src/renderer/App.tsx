@@ -1,16 +1,34 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
-import Header from './components/Header'
-import ReminderList from './components/ReminderList'
-import EmptyState from './components/EmptyState'
-import AddReminderModal from './components/AddReminderModal'
-import type { Reminder } from './types/reminder'
+import Header from './components/Header';
+import ReminderList from './components/ReminderList';
+import EmptyState from './components/EmptyState';
+import AddReminderModal from './components/AddReminderModal';
+import type { Reminder } from './types/reminder';
 import './App.css';
 
 const starterReminders: Reminder[] = [
-  { id: 'starter-portfolio', title: 'Finish portfolio redesign', reminderDate: '2026-10-08', completed: false, sound: '' },
-  { id: 'starter-nudge', title: 'Work on Nudge', reminderDate: '2026-10-08', completed: false, sound: '' },
-  { id: 'starter-application', title: 'Submit job application', reminderDate: '2026-10-10', completed: false, sound: '' },
+  {
+    id: 'starter-portfolio',
+    title: 'Finish portfolio redesign',
+    reminderDate: '2026-10-08',
+    completed: false,
+    sound: '',
+  },
+  {
+    id: 'starter-nudge',
+    title: 'Work on Nudge',
+    reminderDate: '2026-10-08',
+    completed: false,
+    sound: '',
+  },
+  {
+    id: 'starter-application',
+    title: 'Submit job application',
+    reminderDate: '2026-10-10',
+    completed: false,
+    sound: '',
+  },
 ];
 
 function getToday(): string {
@@ -27,6 +45,7 @@ function Main() {
   useEffect(() => {
     void window.electron?.reminders.load().then((savedReminders) => {
       if (savedReminders.length > 0) setReminders(savedReminders);
+      return savedReminders;
     });
   }, []);
 
@@ -34,11 +53,20 @@ function Main() {
     void window.electron?.reminders.save(reminders);
   }, [reminders]);
 
-  const { overdueReminders, todayReminders, upcomingReminders } = useMemo(() => ({
-    overdueReminders: reminders.filter((reminder) => !reminder.completed && reminder.reminderDate < today),
-    todayReminders: reminders.filter((reminder) => reminder.reminderDate === today),
-    upcomingReminders: reminders.filter((reminder) => reminder.reminderDate > today),
-  }), [reminders, today]);
+  const { overdueReminders, todayReminders, upcomingReminders } = useMemo(
+    () => ({
+      overdueReminders: reminders.filter(
+        (reminder) => !reminder.completed && reminder.reminderDate < today,
+      ),
+      todayReminders: reminders.filter(
+        (reminder) => reminder.reminderDate === today,
+      ),
+      upcomingReminders: reminders.filter(
+        (reminder) => reminder.reminderDate > today,
+      ),
+    }),
+    [reminders, today],
+  );
 
   const toggleReminder = (id: string) => {
     setReminders((currentReminders) =>
@@ -50,28 +78,37 @@ function Main() {
             }
           : reminder,
       ),
-    )
+    );
   };
 
   const addReminder = (reminder: Reminder) => {
-    setReminders((currentReminders) => [
-      ...currentReminders,
-      reminder,
-    ])
+    setReminders((currentReminders) => [...currentReminders, reminder]);
 
-    setIsModalOpen(false)
+    setIsModalOpen(false);
   };
 
   const deleteReminder = (id: string): void => {
-    setReminders((currentReminders) => currentReminders.filter((reminder) => reminder.id !== id));
+    setReminders((currentReminders) =>
+      currentReminders.filter((reminder) => reminder.id !== id),
+    );
   };
 
   return (
     <main className={`app${isDarkMode ? ' dark-mode' : ''}`}>
-      <Header isDarkMode={isDarkMode} onToggleDarkMode={() => setIsDarkMode((current) => !current)} />
+      <Header
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode((current) => !current)}
+      />
 
       <section className="content">
-        {overdueReminders.length > 0 && <ReminderList title="Needs attention" reminders={overdueReminders} onToggle={toggleReminder} onDelete={deleteReminder} />}
+        {overdueReminders.length > 0 && (
+          <ReminderList
+            title="Needs attention"
+            reminders={overdueReminders}
+            onToggle={toggleReminder}
+            onDelete={deleteReminder}
+          />
+        )}
         {todayReminders.length > 0 && (
           <ReminderList
             title="Today"
@@ -109,10 +146,8 @@ function Main() {
         />
       )}
     </main>
-  )
+  );
 }
-
-
 
 export default function App() {
   return (

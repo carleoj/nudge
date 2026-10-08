@@ -12,10 +12,20 @@ export default function Header({ isDarkMode, onToggleDarkMode }: HeaderProps) {
         <p className="subtitle">For the things you left unfinished.</p>
       </div>
       <div className="header-actions">
-        <button className="theme-button" type="button" onClick={onToggleDarkMode} aria-pressed={isDarkMode} aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}>
+        <button
+          className="theme-button"
+          type="button"
+          onClick={onToggleDarkMode}
+          aria-pressed={isDarkMode}
+          aria-label={
+            isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+          }
+        >
           {isDarkMode ? '☀' : '☾'}
         </button>
-        <span className="header-mark" aria-hidden="true">✦</span>
+        <span className="header-mark" aria-hidden="true">
+          ✦
+        </span>
       </div>
     </header>
   );
